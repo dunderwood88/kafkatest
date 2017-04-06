@@ -1,0 +1,13 @@
+{
+  "name": "kafkatest",
+  "main": "server.js",
+  "engines": {
+    "node": "7.6.0",
+    "npm": "4.1.2"
+  },
+  "dependencies": {
+    "kafka": "^0.2.3",
+    "kafka-node": "^1.6.0",
+    "websocket": "^1.0.24"
+  }
+}
