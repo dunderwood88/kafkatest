@@ -6,8 +6,8 @@
     "npm": "4.1.2"
   },
   "dependencies": {
-    "kafka": "^0.2.3",
+    "express": "^4.15.2",
     "kafka-node": "^1.6.0",
-    "websocket": "^1.0.24"
+    "socket.io": "^1.7.3"
   }
 }
