@@ -21,7 +21,7 @@ exports.newMessage = function(req, res) {
 
         producer.send([{
             topic: 'test1',
-            messages: 'delivered to user ' + userId
+            messages: message
         }],
         function (err, data) {
             console.log(err | data);
