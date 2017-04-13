@@ -20,7 +20,7 @@ exports.newMessage = function(req, res) {
     producer.on('ready', function() {
 
         producer.send([{
-            topic: 'test1',
+            topic: userId,
             messages: message
         }],
         function (err, data) {
