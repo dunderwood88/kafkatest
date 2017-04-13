@@ -6,8 +6,12 @@
     "npm": "4.1.2"
   },
   "dependencies": {
+    "body-parser": "^1.17.1",
+    "cookie-parser": "^1.4.3",
     "express": "^4.15.2",
     "kafka-node": "^1.6.0",
-    "socket.io": "^1.7.3"
+    "socket.io": "^1.7.3",
+    "socket.io-cookie": "0.0.1",
+    "socket.io-cookie-parser": "^1.0.0"
   }
 }

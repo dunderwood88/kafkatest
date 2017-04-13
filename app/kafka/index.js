@@ -15,14 +15,16 @@ module.exports.createClient = function() {
 
 
 
-module.exports.createConsumer = function(client, topic) {
+module.exports.createConsumer = function(_client, _topic) {
+
 
     //create instance of kafka consumer
-    var consumer = new kafka.Consumer(client,
+    var consumer = new kafka.Consumer(_client,
         [
             {
-                topic: topic,
-                partition: 0
+                topic: _topic,
+                partition: 0,
+                fromOffset: -1
             }
         ],
         {
@@ -35,7 +37,14 @@ module.exports.createConsumer = function(client, topic) {
 }
 
 
-module.exports.createProducer = function() {
+module.exports.createProducer = function(_client) {
 
+    var producer = new kafka.Producer(_client);
+
+    producer.on('error', function(err) {
+        console.log("Kafka producer error: " + err);
+    })
+
+    return producer;
 
 }
