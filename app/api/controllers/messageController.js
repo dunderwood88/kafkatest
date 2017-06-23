@@ -22,6 +22,7 @@ exports.newMessage = function(req, res) {
         producer.send([{
             topic: String(userId),
             messages: message
+            //messages: notificationObject
         }],
         function (err, data) {
             console.log(err | data);

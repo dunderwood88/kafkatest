@@ -7,7 +7,7 @@ module.exports.createClient = function() {
         kafkaHost = process.env.KAFKA_HOST,
         kafkaPort = process.env.KAFKA_PORT,
 
-    client = new kafka.Client(kafkaHost + ':' + kafkaPort);
+    client = new kafka.Client(kafkaHost + ':' + kafkaPort);//, _clientId);
 
     return client;
 
@@ -23,8 +23,7 @@ module.exports.createConsumer = function(_client, _topic) {
         [
             {
                 topic: _topic,
-                partition: 0,
-                fromOffset: -1
+                partition: 0
             }
         ],
         {
@@ -46,5 +45,12 @@ module.exports.createProducer = function(_client) {
     })
 
     return producer;
+
+}
+
+
+module.exports.offset = function(_client) {
+
+    return new kafka.Offset(_client);
 
 }

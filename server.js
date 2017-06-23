@@ -1,11 +1,12 @@
-//server.js
+// server.js
 
-//set up express instance
+// set up express instance
 var express = require('express');
 var app = express();
 
+// includes
 var kafka = require('./app/kafka');
-//var client = new kafka.createClient();
+
 
 
 //configure the app to use bodyParser()
@@ -14,57 +15,59 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
 
-//set up routes for our API
+// set up routes for the API
 require('./app/api/routes')(app);
 
-app.get('/', function(req, res) {
-    res.sendFile(__dirname + '/public/index.html');
-});
 
-//what port are we listening on?
+// what port are we listening on?
 var port = process.env.PORT;
+
 
 module.exports = app;
 
 
-//start the server
+// start the server
 const server = app.listen(port);
 console.log("Listening on port " + port);
 
 
-
+// websockets
 var io = require('socket.io').listen(server);
 var cookieParser = require('socket.io-cookie');
 io.use(cookieParser);
 
 
+
+// websocket event handling
 io.on('connection', function(socket) {
 
-    //Get the Segue authorisation cookie
+    // get the Segue authorisation cookie
     var cookie = socket.handshake.headers.cookie.SEGUE_AUTH_COOKIE;
 
-    //parse the cookie object (unfortunately requires some cleanup due to escaped quotes in string)
+    // parse the cookie object (unfortunately requires some cleanup due to escaped quotes in string)
     var cookieData = JSON.parse(cookie.replace(/\\"/g, '"'));
 
     var userId = cookieData.currentUserId;
+    console.log('user ' + userId + ' connected');
 
-    console.log('user ' + cookieData.currentUserId + ' connected');
 
-
-    //set up consumer and subscribe to topic
-    var consumer = new kafka.createConsumer(new kafka.createClient(), userId);
+    // set up consumer and subscribe to topic
+    var consumer = new kafka.createConsumer(new kafka.createClient(), "userNotifications");
 
     //event to fire when message published to topic
     consumer.on('message', function(message) {
-        var data = message.value;
 
-        //send message via open socket
-        socket.emit('message', data);
+        var jsonRecord = JSON.parse(message.value);
+
+        if (userId == jsonRecord.userId) {
+            // send message via open socket
+            socket.emit('message', message);
+        }
+
     });
 
 
     socket.on('disconnect', function() {
-
         console.log('user disconnected');
     });
 
